@@ -1,0 +1,26 @@
+default: &default
+  adapter: <%= ENV.fetch('DB_ADAPTER') { 'postgresql' } %>
+  pool: <%= ENV.fetch("DB_POOL") { 5 } %>
+  timeout: <%= ENV.fetch('PG_TIMEOUT') { 5000 } %>
+  host: <%= ENV.fetch('PG_HOST') { 'localhost' } %>
+  username: <%= ENV.fetch('PG_USERNAME') { 'pguser' } %>
+  password: <%= ENV.fetch('PG_PASSWORD') { 'password' } %>
+
+development:
+  <<: *default
+  database: edward/development
+
+test: &test
+  <<: *default
+  database: edward/test
+
+staging:
+  <<: *default
+  database: edward/staging
+
+production:
+  <<: *default
+  database: edward/production
+
+cucumber:
+  <<: *test
