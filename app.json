@@ -8,7 +8,7 @@
   "addons": [
     "heroku-postgresql"
   ],
-  "environments: {
+  "environments": {
     "test": {
       "scripts": {
         "postdeploy": "bundle exec cucumber"
