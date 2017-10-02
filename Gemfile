@@ -33,7 +33,3 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'cucumber-persona'
 end
-
-group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
-end
