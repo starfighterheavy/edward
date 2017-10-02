@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require 'cucumber/persona'
+require_relative '../features/support/personas'
+
+Cucumber::Persona.create_all

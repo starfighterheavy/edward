@@ -29,7 +29,7 @@ end
 
 group :development, :test do
   gem 'pry-byebug'
-
+  gem 'cucumber-persona'
 end
 
 group :development do
