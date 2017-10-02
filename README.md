@@ -1,24 +1,9 @@
-# README
+# Edward
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[![Code Climate](https://codeclimate.com/github/starfighterheavy/edward/badges/gpa.svg)](https://codeclimate.com/github/starfighterheavy/edward)
 
-Things you may want to cover:
+Edward is a Ruby based, Heroku deployable, api-only, experimental application intended to drive conversation based user interfaces. It is currently under development and actively used, but could removed at any time. Use at your own risk.
 
-* Ruby version
+If you'd like to contribute ideas or code to Edward, please reach out to [jskirst](https://github.com/jskirst).
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/starfighterheavy/edward)
