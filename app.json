@@ -1,0 +1,18 @@
+{
+  "name": "Edward",
+  "description": "Edward is a Heroku deployable, Rails application that enables conversation based user interactions.",
+  "repository": "https://github.com/starfighterheavy/edward",
+  "scripts": {
+    "postdeploy": "bundle exec rake db:migrate db:seed"
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "environments: {
+    "test": {
+      "scripts": {
+        "postdeploy": "bundle exec cucumber"
+      }
+    }
+  }
+}
