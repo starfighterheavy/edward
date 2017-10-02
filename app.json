@@ -5,6 +5,16 @@
   "scripts": {
     "postdeploy": "bundle exec rake db:migrate db:seed"
   },
+  "env": {
+    "LANG": "en_US.UTF-8",
+    "RACK_ENV": "development",
+    "RAILS_ENV": "development",
+    "RAILS_LOG_TO_STDOUT": "enabled",
+    "RAILS_SERVE_STATIC_FILES": "enabled",
+    "SECRET_KEY_BASE": {
+      "generator": "secret"
+    }
+  },
   "addons": [
     "heroku-postgresql"
   ],
