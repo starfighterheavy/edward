@@ -15,7 +15,7 @@ Feature: Steps API
     And the JSON response should be:
     """
     {
-      "text": "My first name is [:user_first_name], and my last name is [:user_last_name].",
+      "text": "My first name is {{user_first_name}}, and my last name is {{user_last_name}}.",
       "answers": {
         "user_first_name": {
           "input_type": "short_text"
@@ -23,7 +23,14 @@ Feature: Steps API
         "user_last_name": {
           "input_type": "short_text"
         }
-      }
+      },
+      "parts": [
+        { "type": "text", "content": "My first name is " },
+        { "type": "answer", "answer": { "name": "user_first_name", "input_type": "short_text" } },
+        { "type": "text", "content": ", and my last name is " },
+        { "type": "answer", "answer": { "name": "user_last_name", "input_type": "short_text" } },
+        { "type": "text", "content": "." }
+      ]
     }
     """
 
@@ -41,7 +48,7 @@ Feature: Steps API
     And the JSON response should be:
     """
     {
-      "text": "Generally I prefer [:user_style_preference] wines.",
+      "text": "Generally I prefer {{user_style_preference}} wines.",
       "answers": {
         "user_style_preference": {
           "input_type": "select",
@@ -50,7 +57,22 @@ Feature: Steps API
             "white": "white"
           }
         }
-      }
+      },
+      "parts": [
+        { "type": "text", "content": "Generally I prefer " },
+        {
+          "type": "answer",
+          "answer": {
+            "name": "user_style_preference",
+            "input_type": "select",
+            "options": {
+              "red": "red",
+              "white": "white"
+            }
+          }
+        },
+        { "type": "text", "content": " wines." }
+      ]
     }
     """
 
@@ -69,7 +91,7 @@ Feature: Steps API
     And the JSON response should be:
     """
     {
-    "text": "Would you like any white wine recommendations?\n[:user_desires_recommendations]",
+    "text": "Would you like any white wine recommendations?\n{{user_desires_recommendations}}",
       "answers": {
         "user_desires_recommendations": {
           "input_type": "select",
@@ -78,7 +100,22 @@ Feature: Steps API
             "no": "No"
           }
         }
-      }
+      },
+      "parts": [
+        { "type": "text", "content": "Would you like any white wine recommendations?\n" },
+        {
+          "type": "answer",
+          "answer": {
+            "name": "user_desires_recommendations",
+            "input_type": "select",
+            "options": {
+              "yes": "Yes",
+              "no": "No"
+            }
+          }
+        }
+      ]
+
     }
     """
 
@@ -98,6 +135,9 @@ Feature: Steps API
     And the JSON response should be:
     """
     {
-      "text": "I recommend the Russian River Chardonnay."
+      "text": "I recommend the Russian River Chardonnay.",
+      "parts": [
+        { "type": "text", "content": "I recommend the Russian River Chardonnay." }
+      ]
     }
     """
