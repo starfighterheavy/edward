@@ -14,6 +14,7 @@ gem 'puma', '~> 3.7'
 gem 'rack-cors'
 gem 'dotenv-rails'
 gem 'cucumber-persona'
+gem 'rack-cors', require: 'rack/cors'
 
 group :test do
   gem 'capybara', '~> 2.13.0'
