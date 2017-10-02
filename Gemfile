@@ -13,6 +13,7 @@ gem 'pg'
 gem 'puma', '~> 3.7'
 gem 'rack-cors'
 gem 'dotenv-rails'
+gem 'cucumber-persona'
 
 group :test do
   gem 'capybara', '~> 2.13.0'
@@ -31,5 +32,4 @@ end
 
 group :development, :test do
   gem 'pry-byebug'
-  gem 'cucumber-persona'
 end
