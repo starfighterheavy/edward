@@ -253,5 +253,8 @@ DEPENDENCIES
   spreewald
   webmock
 
+RUBY VERSION
+   ruby 2.3.4p301
+
 BUNDLED WITH
    1.14.6
