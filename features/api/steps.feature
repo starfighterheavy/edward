@@ -52,8 +52,7 @@ Feature: Steps API
             { "text": "white", "value": "white" }
           ]
         },
-        { "type": "text", "content": " wines" },
-        { "type": "text", "content": "." }
+        { "type": "text", "content": " wines." }
       ]
     }
     """
@@ -106,8 +105,7 @@ Feature: Steps API
     {
       "text": "I recommend the Russian River Chardonnay.",
       "parts": [
-        { "type": "text", "content": "I recommend the Russian River Chardonnay" },
-        { "type": "text", "content": "." }
+        { "type": "text", "content": "I recommend the Russian River Chardonnay." }
       ]
     }
     """
