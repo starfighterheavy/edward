@@ -18,10 +18,10 @@ Feature: Steps API
       "text": "My first name is {{?user_first_name}}, and my last name is {{?user_last_name}}. Generally I prefer {{?user_style_preference}} wines.",
       "parts": [
         { "type": "text", "content": "My first name is " },
-        { "type": "short_text", "name": "user_first_name" },
+        { "type": "short_text", "name": "user_first_name", "characters": 8 },
         { "type": "text", "content": "," },
         { "type": "text", "content": " and my last name is " },
-        { "type": "short_text", "name": "user_last_name" },
+        { "type": "short_text", "name": "user_last_name", "characters": 10 },
         { "type": "text", "content": "." },
         { "type": "text", "content": " Generally I prefer " },
         {
@@ -57,7 +57,8 @@ Feature: Steps API
         { "type": "text", "content": "Hello " },
         { "type": "text", "content": "Giles" },
         { "type": "text", "content": "," },
-        { "type": "text", "content": " would you like any recommendations?\n" },
+        { "type": "text", "content": " would you like any recommendations?" },
+        { "type": "text", "content": "\n" },
         {
           "type": "select",
           "name": "user_desires_recommendations",
@@ -70,7 +71,7 @@ Feature: Steps API
     }
     """
 
-  Scenario: Create step with no answers
+  Scenario: Create step with no answers and lots of breaking punctuation
     When I send a POST request to "/api/workflows/abc/steps" with the following:
     """
     {
@@ -86,9 +87,12 @@ Feature: Steps API
     And the JSON response should be:
     """
     {
-      "text": "I recommend the {{@recommendation}}.",
+      "text": "Really? Splendid! Superb. I recommend the {{@recommendation}}.",
       "parts": [
-        { "type": "text", "content": "I recommend the " },
+        { "type": "text", "content": "Really?" },
+        { "type": "text", "content": " Splendid!" },
+        { "type": "text", "content": " Superb." },
+        { "type": "text", "content": " I recommend the " },
         { "type": "text", "content": "Russian River Chardonnay" },
         { "type": "text", "content": "." }
       ]
