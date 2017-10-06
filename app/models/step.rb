@@ -22,7 +22,7 @@ class Step < ActiveRecord::Base
   end
 
   def facts
-    @facts ||= Facts.new(text, @user_facts, callout).to_h
+    @facts ||= Facts.new(text, @user_facts, callout, callout_method, callout_body).to_h
   end
 
   class Parts
@@ -64,12 +64,14 @@ class Step < ActiveRecord::Base
   end
 
   class Facts
-    attr_reader :text, :user_facts, :callout
+    attr_reader :text, :user_facts, :callout, :callout_method, :callout_body
 
-    def initialize(text, user_facts, callout)
+    def initialize(text, user_facts, callout, callout_method, callout_body)
       @text = text
       @user_facts = user_facts
       @callout = callout
+      @callout_method = callout_method
+      @callout_body = callout_body
       @callout_facts = make_callout if callout
     end
 
@@ -81,7 +83,14 @@ class Step < ActiveRecord::Base
       return unless callout
       url_template = Liquid::Template.parse(callout)
       url = url_template.render(user_facts)
-      HTTParty.get(url).parsed_response.symbolize_keys
+      if callout_method == "get"
+        HTTParty.get(url).parsed_response.symbolize_keys
+      else
+        body_template = Liquid::Template.parse(callout_body)
+        body = body_template.render(user_facts)
+
+        HTTParty.post(url, { body: body }).parsed_response.symbolize_keys
+      end
     end
   end
 

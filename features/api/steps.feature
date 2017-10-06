@@ -98,3 +98,28 @@ Feature: Steps API
       ]
     }
     """
+
+  Scenario: Create step with no answers and lots of breaking punctuation
+    When I send a POST request to "/api/workflows/abc/steps" with the following:
+    """
+    {
+      "facts": {
+        "user_first_name": "Giles",
+        "user_last_name": "Rotherbrok",
+        "user_style_preference": "red",
+        "user_desires_recommendations": "yes"
+      }
+    }
+    """
+    Then the response status should be "200"
+    And the JSON response should be:
+    """
+    {
+      "text": "I recommend the {{@recommendation}}.",
+      "parts": [
+        { "type": "text", "content": "I recommend the " },
+        { "type": "text", "content": "Pinot Noir" },
+        { "type": "text", "content": "." }
+      ]
+    }
+    """
