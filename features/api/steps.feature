@@ -115,11 +115,13 @@ Feature: Steps API
     And the JSON response should be:
     """
     {
-      "text": "I recommend the {{@recommendation}}.",
+      "text": "I recommend the {{@recommendation}}.\n{{?recommendation}}",
       "parts": [
         { "type": "text", "content": "I recommend the " },
         { "type": "text", "content": "Pinot Noir" },
-        { "type": "text", "content": "." }
+        { "type": "text", "content": "." },
+        { "type": "text", "content": "\n" },
+        { "type": "hidden", "name": "recommendation", "value": "Pinot Noir" }
       ]
     }
     """

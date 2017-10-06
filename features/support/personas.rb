@@ -21,14 +21,14 @@ Cucumber::Persona.define "Ragnar Lothbrok" do
                  ])
 
   wf.steps.create!(text: "Really? Splendid! Superb. I recommend the {{@recommendation}}.",
-               callout: "http://www.callout.com/api/fact?user_first_name={{user_first_name}}",
-               callout_method: "get",
-               conditions: URI.escape("user_style_preference=white&user_desires_recommendations=yes"))
+                   callout: "http://www.callout.com/api/fact?user_first_name={{user_first_name}}",
+                   callout_method: "get",
+                   conditions: URI.escape("user_style_preference=white&user_desires_recommendations=yes"))
 
-  wf.steps.create!("text": "I recommend the {{@recommendation}}.",
-               callout: "http://www.callout.com/api/fact?user_first_name={{user_first_name}}",
-               callout_method: "post",
-               callout_body: "preference={{user_style_preference}}",
-               conditions: URI.escape("user_style_preference=red&user_desires_recommendations=yes"))
-
+  wf.steps.create!(text: "I recommend the {{@recommendation}}.\n{{?recommendation}}",
+                   callout: "http://www.callout.com/api/fact?user_first_name={{user_first_name}}",
+                   callout_method: "post",
+                   callout_body: "preference={{user_style_preference}}",
+                   conditions: URI.escape("user_style_preference=red&user_desires_recommendations=yes"))
+  Answer.create!(name: "recommendation", input_type: "hidden")
 end

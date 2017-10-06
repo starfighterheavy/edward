@@ -50,7 +50,9 @@ class Step < ActiveRecord::Base
           item_type = item[0]
           item[0] = ''
           if item_type == '?'
-            answers[item].merge(name: item)
+            answer = answers[item].merge(name: item)
+            answer.merge!(value: facts[item]) if facts[item]
+            answer
           elsif item_type == '@'
             { type: "text", content: facts[item] }
           else
