@@ -1,3 +1,3 @@
-Given(/^I am Ragnar Lothbrok$/) do
-  Cucumber::Persona.find("Ragnar Lothbrok").create
+Given(/^I am (.*)$/) do |name|
+  Cucumber::Persona.find(name).create
 end

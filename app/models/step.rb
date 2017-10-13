@@ -7,9 +7,9 @@ class Step < ActiveRecord::Base
        .map { |c| c.split("=") }
        .all? do |key,value|
          if key.ends_with?("!")
-           data[key[0..-2]] != value
+           data[key[0..-2]].to_s != value.to_s
          else
-          data[key] == value
+          data[key].to_s == value.to_s
          end
        end
   end
@@ -24,7 +24,7 @@ class Step < ActiveRecord::Base
   end
 
   def answers
-    @answers ||= Answers.new(text).to_h
+    @answers ||= Answers.new(text, facts).to_h
   end
 
   def facts
@@ -80,7 +80,10 @@ class Step < ActiveRecord::Base
       @callout = callout
       @callout_method = callout_method
       @callout_body = callout_body
-      @callout_facts = make_callout if callout
+      if callout
+        Rails.logger.info "Calling out to: #{callout}"
+        @callout_facts = make_callout
+      end
     end
 
     def to_h
@@ -97,16 +100,17 @@ class Step < ActiveRecord::Base
         body_template = Liquid::Template.parse(callout_body)
         body = body_template.render(user_facts)
 
-        HTTParty.post(url, { body: body }).parsed_response.symbolize_keys
+        HTTParty.post(url, { body: body }).parsed_response&.symbolize_keys
       end
     end
   end
 
   class Answers
-    attr_reader :text
+    attr_reader :text, :facts
 
-    def initialize(text)
+    def initialize(text, facts)
       @text = text
+      @facts = facts
     end
 
     def items
@@ -116,7 +120,7 @@ class Step < ActiveRecord::Base
     end
 
     def to_a
-      items.map { |a| [a.name, a.to_h] }
+      items.map { |a| [a.name, a.to_h(facts)] }
     end
 
     def to_h

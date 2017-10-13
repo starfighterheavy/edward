@@ -35,3 +35,41 @@ Cucumber::Persona.define "Ragnar Lothbrok" do
                    conditions: URI.escape("user_style_preference=red&user_desires_recommendations=yes"))
   Answer.create!(workflow: wf, name: "recommendation", input_type: "hidden")
 end
+
+
+Cucumber::Persona.define "Arthur Dent" do
+  wf = Workflow.find_or_create_by(token: 'auth')
+
+  Step.create!(workflow: wf,
+               text: "Texting a token to your phone.\n{{?user_phone_number}}",
+               conditions: "user_phone_number=")
+  Answer.create!(workflow: wf,
+                 name: "user_phone_number",
+                 input_type: "short_text",
+                 characters: 11,
+                 text_field_type: 'number',
+                 mask: "(###) ###-####")
+
+  Step.create!(workflow: wf,
+               text: "Please enter the 4 digit number that was just sent to your phone.\n{{?user_confirmation_token}}",
+               conditions: "user_phone_number!=&user_confirmation_token=",
+               callout: "https://www.callout.com/api/v1/users",
+               callout_method: "post",
+               callout_body: "user[phone={{user_phone_number}}]")
+  Answer.create!(workflow: wf,
+                 name: "user_confirmation_token",
+                 input_type: "short_text",
+                 characters: 6,
+                 text_field_type: 'number',
+                 mask: "####")
+
+  Step.create!(workflow: wf,
+               text: "Thank you! Welcome to the application.{{?auth_token}}",
+               conditions: "user_confirmation_token!=&auth_token=",
+               callout: "https://www.callout.com/api/v1/sessions",
+               callout_method: "post",
+               callout_body: "session[phone]={{phone}}&session[confirmation_token]={{user_confirmation_token}}")
+  Answer.create!(workflow: wf,
+                 name: "auth_token",
+                 input_type: "hidden")
+end

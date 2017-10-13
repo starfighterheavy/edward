@@ -4,7 +4,7 @@ class Answer < ActiveRecord::Base
 
   accepts_nested_attributes_for :options
 
-  def to_h
+  def to_h(user_facts)
     @hsh ||= begin
       hsh = {
         type: input_type
@@ -13,6 +13,8 @@ class Answer < ActiveRecord::Base
       hsh.merge!(characters: characters) if characters
       hsh.merge!(text_field_type: text_field_type) if text_field_type
       hsh.merge!(mask: mask) if mask
+      value = user_facts[name]
+      hsh.merge!(value: value) if value
       hsh
     end
   end

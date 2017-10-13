@@ -7,7 +7,11 @@ class Workflow < ActiveRecord::Base
   end
 
   def match(data)
-    steps.find { |step| step.match?(data) }
+    matched_step = steps.find { |step| step.match?(data) }
+    return matched_step if matched_step
+    raise UnmatchableDataError
   end
+
+  class UnmatchableDataError < StandardError; end
 end
 
