@@ -69,7 +69,7 @@ class Step < ActiveRecord::Base
           item[0] = ''
           if item_type == '?'
             answer = answers[item]
-            anwer.merge(name: item)
+            answer.merge!(name: item)
             answer.merge!(value: facts[item]) if facts[item]
             answer
           elsif item_type == '@'
