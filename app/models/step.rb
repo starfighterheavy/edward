@@ -69,6 +69,7 @@ class Step < ActiveRecord::Base
           item[0] = ''
           if item_type == '?'
             answer = answers[item]
+            raise AnswerNotFound, "No Answer found for name: #{item}" unless answer
             answer.merge!(name: item)
             answer.merge!(value: facts[item]) if facts[item]
             answer
@@ -84,6 +85,8 @@ class Step < ActiveRecord::Base
         end
       end
     end
+
+    class AnswerNotFound < StandardError; end
   end
 
   class Facts

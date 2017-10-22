@@ -5,6 +5,10 @@ class Api::StepsController < ApplicationController
     render json: { error: "No matching step found.", facts: fact_params.to_h }, status: 422
   end
 
+  rescue_from Step::Parts::AnswerNotFound do |e|
+    render json: { error: e }, status: 500
+  end
+
   rescue_from Step::Answers::AnswerNotFound do |e|
     render json: { error: e }, status: 500
   end
