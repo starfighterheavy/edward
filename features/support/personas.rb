@@ -60,6 +60,13 @@ Cucumber::Persona.define "Callto Action" do
                cta_href: "https://www.example.com")
 end
 
+Cucumber::Persona.define "Cannot Match" do
+  wf = Workflow.find_or_create_by(token: 'cannotmatch')
+  Step.create!(token: "impossible",
+               workflow: wf,
+               text: "Hello.",
+               conditions: "impossible!=")
+end
 
 Cucumber::Persona.define "Arthur Dent" do
   wf = Workflow.find_or_create_by(token: 'auth')

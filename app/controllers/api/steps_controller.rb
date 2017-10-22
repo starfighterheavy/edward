@@ -1,12 +1,22 @@
 class Api::StepsController < ApplicationController
+  before_action :load_workflow
+
+  rescue_from Workflow::UnmatchableDataError do |e|
+    render json: { error: "No matching step found.", facts: fact_params.to_h }, status: 422
+  end
+
   def create
-    render json: workflow.match(fact_params).to_h(fact_params.to_h)
+    Rails.logger.info "New step request for workflow #{params[:workflow_id]}: #{fact_params}"
+    step = @workflow.match(fact_params)
+    render json: step.to_h(fact_params.to_h)
   end
 
   private
 
-  def workflow
-    @workflow ||= Workflow.find_by(token: params[:workflow_id])
+  def load_workflow
+    @workflow = Workflow.find_by(token: params[:workflow_id])
+    return if @workflow
+    render json: { error: "Workflow not found" }, status: :not_found
   end
 
   def fact_params
