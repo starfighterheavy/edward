@@ -143,9 +143,9 @@ class Step < ActiveRecord::Base
       name = name_and_value[0]
       value = name_and_value[1]&.gsub("'", '')
       answer = Answer.find_by(name: name)
+      raise AnswerNotFound, "No Answer found for name: #{name}" unless answer
       answer.default_value = value if value
-      return answer if answer
-      raise AnswerNotFound, "No Answer found for name: #{name}"
+      answer
     end
 
     def to_a
