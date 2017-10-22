@@ -51,7 +51,7 @@ class Step < ActiveRecord::Base
     end
 
     def items
-      @items ||= text.split(/\{(\{[\?@a-z_]+\})\}/)
+      @items ||= text.split(/\{(\{[\?@a-z_1-9]+\})\}/)
                    .map { |i| i.split(/^([\.\?!,])/) } # split out punctuation that occurs at the beginning
                    .flatten
                    .map { |i| i.split(/([^\.\?,!\{\}]+[\.\?!,]+)/) } # split out punctuation that does not occur at beginning but is not inside liquid block
@@ -132,7 +132,7 @@ class Step < ActiveRecord::Base
     end
 
     def items
-      @items ||= text.scan(/\{\{\?([a-z_]+)\}\}/)
+      @items ||= text.scan(/\{\{\?([a-z_1-9]+)\}\}/)
                    .flatten
                    .map { |name| find_by_name(name) }
     end

@@ -76,6 +76,17 @@ Cucumber::Persona.define "Nosuch Answer" do
                conditions: "thing=")
 end
 
+Cucumber::Persona.define "Alpha Numeric" do
+  wf = Workflow.find_or_create_by(token: 'alphanumeric')
+  Step.create!(token: "alphanumeric",
+               workflow: wf,
+               text: "Letter.{{?alpha_1}}",
+               conditions: "thing=")
+  Answer.create(name: 'alpha_1',
+                input_type: 'hidden',
+                workflow: wf)
+end
+
 Cucumber::Persona.define "Arthur Dent" do
   wf = Workflow.find_or_create_by(token: 'auth')
 
