@@ -31,3 +31,20 @@ Feature: Error handling
       "facts": {}
     }
     """
+
+  Scenario: Answer not found
+    Given I am Nosuch Answer
+    When I send a POST request to "/api/workflows/nosuchanswer/steps" with the following:
+    """
+    {
+      "facts": {}
+    }
+    """
+    Then the response status should be "500"
+    And the JSON response should be:
+    """
+    {
+      "error": "No Answer found for name: doesnotexist"
+    }
+    """
+

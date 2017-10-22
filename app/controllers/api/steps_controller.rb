@@ -5,6 +5,10 @@ class Api::StepsController < ApplicationController
     render json: { error: "No matching step found.", facts: fact_params.to_h }, status: 422
   end
 
+  rescue_from Step::Answers::AnswerNotFound do |e|
+    render json: { error: e }, status: 500
+  end
+
   def create
     Rails.logger.info "New step request for workflow #{params[:workflow_id]}: #{fact_params}"
     step = @workflow.match(fact_params)

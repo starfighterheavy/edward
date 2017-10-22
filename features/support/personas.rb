@@ -68,6 +68,14 @@ Cucumber::Persona.define "Cannot Match" do
                conditions: "impossible!=")
 end
 
+Cucumber::Persona.define "Nosuch Answer" do
+  wf = Workflow.find_or_create_by(token: 'nosuchanswer')
+  Step.create!(token: "impossible",
+               workflow: wf,
+               text: "Hello.{{?doesnotexist}}",
+               conditions: "thing=")
+end
+
 Cucumber::Persona.define "Arthur Dent" do
   wf = Workflow.find_or_create_by(token: 'auth')
 

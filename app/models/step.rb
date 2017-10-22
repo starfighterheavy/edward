@@ -68,7 +68,8 @@ class Step < ActiveRecord::Base
           item_type = item[0]
           item[0] = ''
           if item_type == '?'
-            answer = answers[item].merge(name: item)
+            answer = answers[item]
+            anwer.merge(name: item)
             answer.merge!(value: facts[item]) if facts[item]
             answer
           elsif item_type == '@'
@@ -130,7 +131,13 @@ class Step < ActiveRecord::Base
     def items
       @items ||= text.scan(/\{\{\?([a-z_]+)\}\}/)
                    .flatten
-                   .map { |name| Answer.find_by(name: name) }
+                   .map { |name| find_by_name(name) }
+    end
+
+    def find_by_name(name)
+      answer = Answer.find_by(name: name)
+      return answer if answer
+      raise AnswerNotFound, "No Answer found for name: #{name}"
     end
 
     def to_a
@@ -140,5 +147,7 @@ class Step < ActiveRecord::Base
     def to_h
       Hash[*to_a.flatten]
     end
+
+    class AnswerNotFound < StandardError; end
   end
 end
