@@ -1,4 +1,4 @@
 = simple_form_for([@owner, @resource]) do |f|
-  = f.input :text
-  = f.input :conditions
+  - @resource_permitted_params.each do |param|
+    = f.input param
   = f.submit "Save"

@@ -2,12 +2,16 @@ class StepsController < ApplicationController
   include Rapido::Controller
   include Rapido::AppController
 
+  before_action do
+    resource_permitted_params
+  end
+
   owner_class :workflow
   owner_lookup_param :workflow_token
   owner_lookup_field :token
 
   resource_lookup_param :token
-  resource_permitted_params [:text, :conditions, :cta, :cta_class, :cta_link, :callout, :callout_method, :callout_body]
+  resource_permitted_params [:text, :conditions, :cta, :cta_class, :cta_href, :callout, :callout_method, :callout_body]
 
   private
 
