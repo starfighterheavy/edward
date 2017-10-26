@@ -1,8 +1,13 @@
 class Answer < ActiveRecord::Base
-  has_and_belongs_to_many :options
+  has_many :answers_options
+  has_many :options, through: :answers_options
   belongs_to :workflow
 
-  accepts_nested_attributes_for :options
+  validates :name, presence: true
+
+  def to_param
+    name
+  end
 
   def to_h(user_facts = nil)
     @hsh ||= begin

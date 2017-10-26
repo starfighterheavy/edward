@@ -1,4 +1,4 @@
-Feature: Steps
+Feature: Options
 
   Background:
     Given I am Ben Franklin
@@ -8,42 +8,43 @@ Feature: Steps
     And I fill in "Password" with "Password1"
     And I press "Log in"
 
-  Scenario: User can see all steps for a workflow
+  Scenario: User can see all options for a workflow
     When I follow "okayworkflow"
-    Then I should see "Are you okay?"
+    Then I should see "Yes! / yes"
 
-  Scenario: User can create a new step
+  Scenario: User can create a new option
     When I follow "okayworkflow"
-    When I click on "New Step"
-    And I fill in "Text" with "I'm great."
-    And I fill in "Conditions" with "maybe="
+    When I click on "New Option"
+    And I fill in "Value" with "no"
+    And I fill in "Text" with "No!"
     And I press "Save"
-    Then I should see "I'm great."
+    Then I should see "No! / no"
 
-  Scenario: System prevents a new step without text
+  Scenario: System prevents a new option without text
     When I follow "okayworkflow"
-    When I click on "New Step"
-    And I fill in "Text" with ""
+    When I click on "New Option"
+    And I fill in "Value" with ""
     And I press "Save"
-    Then I should see "Text can't be blank"
+    Then I should see "Value can't be blank"
 
   Scenario: User can edit and update a workflow
     When I follow "okayworkflow"
-    And I follow "Are you okay?"
-    And I fill in "Text" with "Slightly better text"
+    And I follow "Yes! / yes"
+    And I fill in "Text" with "Yeees!"
     And I press "Save"
-    Then I should see "Slightly better text"
+    Then I should see "Yeees! / yes"
+    And I should not see "Yes! / yes"
 
   Scenario: System prevents invalid update
     When follow "okayworkflow"
-    And I follow "Are you okay?"
+    And I follow "Yes! / yes"
     And I fill in "Text" with ""
     And I press "Save"
     Then I should see "Text can't be blank"
 
-  Scenario: User can delete a step
+  Scenario: User can delete a option
     When follow "okayworkflow"
-    And I follow "Are you okay?"
+    And I follow "Yes! / yes"
     And I click on "Delete"
     Then I should see "okayworkflow"
-    And I should not see "Are you okay?"
+    And I should not see "Yes! / yes"
