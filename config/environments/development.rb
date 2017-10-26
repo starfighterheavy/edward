@@ -42,9 +42,15 @@ Rails.application.configure do
   # number of complex assets.
   config.assets.debug = true
 
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
+
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
   # Raises error for missing translations
-  # config.action_view.raise_on_missing_translations = true
+  config.action_view.raise_on_missing_translations = true
 end
