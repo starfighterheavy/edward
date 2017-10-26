@@ -90,7 +90,7 @@ class Prompt
       @callout = callout
       @callout_method = callout_method
       @callout_body = callout_body
-      if callout
+      if callout.present?
         Rails.logger.info "Calling out to: #{callout}"
         @callout_facts = make_callout
       end
