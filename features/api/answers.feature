@@ -1,66 +1,106 @@
-Feature: Answers
+Feature: answers
 
-  Scenario: Answer with numbers in name
-    Given I am Alpha Numeric
-    When I send a POST request to "/api/workflows/alphanumeric/steps" with the following:
+  Background:
+    Given I am Andy Developer
+    And I send and accept JSON
+
+  Scenario: System prevents access without api_key
+    When I send a POST request to "/api/workflows/okayflow/answers?api_key=12345" with the following:
     """
     {
-      "facts": {}
+      "name": "newanswer",
+      "input_type": "short_text",
+      "mask": "###",
+      "text_field_type": "text"
+    }
+    """
+    Then the response status should be "401"
+    And the JSON response should be:
+    """
+    {
+      "error": "Request denied."
+    }
+    """
+
+  Scenario: Create a answer
+    When I send a POST request to "/api/workflows/okayflow/answers?api_key=ABCDE" with the following:
+    """
+    {
+      "name": "newanswer",
+      "input_type": "short_text",
+      "mask": "###",
+      "text_field_type": "text"
+    }
+    """
+    Then the response status should be "201"
+    And the JSON response should be:
+    """
+    {
+      "name": "newanswer",
+      "input_type": "short_text",
+      "mask": "###",
+      "text_field_type": "text"
+    }
+    """
+
+  Scenario: Get a answer
+    When I send a GET request to "/api/workflows/okayflow/answers/okayanswer?api_key=ABCDE"
+    Then the response status should be "200"
+    And the JSON response should be:
+    """
+    {
+      "name": "okayanswer",
+      "input_type": "short_text",
+      "mask": "###",
+      "text_field_type": "text"
+    }
+    """
+
+  Scenario: Get all answers
+    When I send a GET request to "/api/workflows/okayflow/answers?api_key=ABCDE"
+    Then the response status should be "200"
+    And the JSON response should be:
+    """
+    [
+      {
+        "name": "okayanswer",
+        "input_type": "short_text",
+        "mask": "###",
+        "text_field_type": "text"
+      }
+    ]
+    """
+
+  Scenario: Patch a answer
+    When I send a PATCH request to "/api/workflows/okayflow/answers/okayanswer?api_key=ABCDE"
+    """
+    {
+      "name": "updatedanswer",
+      "input_type": "short_text",
+      "mask": "###",
+      "text_field_type": "number"
     }
     """
     Then the response status should be "200"
     And the JSON response should be:
     """
     {
-      "token": "alphanumeric",
-      "text": "Letter.{{?alpha_1}}",
-      "parts": [
-        { "type": "text", "content": "Letter." },
-        { "type": "hidden", "name": "alpha_1" }
-      ]
+      "name": "updatedanswer",
+      "input_type": "short_text",
+      "mask": "###",
+      "text_field_type": "number"
     }
     """
 
-  Scenario: Answers with default_value set in the step text should return that value
-    Given I am Default Textvalue
-    When I send a POST request to "/api/workflows/defaulttextvalue/steps" with the following:
-    """
-    {
-    "facts": {}
-    }
-    """
+  Scenario: Delete a answer
+    When I send a DELETE request to "/api/workflows/okayflow/answers/okayanswer?api_key=ABCDE"
     Then the response status should be "200"
     And the JSON response should be:
     """
     {
-      "token": "defaulttextvalue",
-      "text": "Default.{{?default_text_value='false'}}",
-      "parts": [
-        { "type": "text", "content": "Default." },
-        { "type": "hidden", "name": "default_text_value", "value": "false" }
-      ]
+      "name": "okayanswer",
+      "input_type": "short_text",
+      "mask": "###",
+      "text_field_type": "text"
     }
     """
-
-
-  Scenario: Answers with default_value set should return them
-    Given I am Default Value
-    When I send a POST request to "/api/workflows/defaultvalue/steps" with the following:
-    """
-    {
-      "facts": {}
-    }
-    """
-    Then the response status should be "200"
-    And the JSON response should be:
-    """
-    {
-      "token": "defaultvalue",
-      "text": "Default.{{?default_value}}",
-      "parts": [
-        { "type": "text", "content": "Default." },
-        { "type": "hidden", "name": "default_value", "value": "true" }
-      ]
-    }
-    """
-

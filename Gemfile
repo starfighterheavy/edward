@@ -8,6 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'rails', '~> 5.1.4'
+gem 'turbolinks'
 gem 'pg'
 gem 'puma', '~> 3.7'
 gem 'rack-cors'
@@ -17,10 +18,15 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'httparty'
 gem 'liquid'
 gem 'jsonpath'
+gem 'rails-rapido', github: 'starfighterheavy/rapido'
+gem 'kaminari'
+gem 'devise'
+gem 'slim'
+gem 'simple_form'
 
 group :test do
   gem 'capybara', '~> 2.13.0'
-  gem 'cucumber-api-steps'
+  gem 'cucumber-api-steps', github: 'jayzes/cucumber-api-steps'
   gem 'cucumber-rails', require: false
   gem 'cucumber_factory'
   gem 'database_cleaner'
