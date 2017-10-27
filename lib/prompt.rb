@@ -22,7 +22,7 @@ class Prompt
   end
 
   def answers
-    @answers ||= Answers.new(text, facts).to_h
+    @answers ||= Answers.new(step: step, text: text, facts: facts).to_h
   end
 
   def facts
@@ -116,9 +116,10 @@ class Prompt
   end
 
   class Answers
-    attr_reader :text, :facts
+    attr_reader :step, :text, :facts
 
-    def initialize(text, facts)
+    def initialize(step:, text:, facts:)
+      @step = step
       @text = text
       @facts = facts
     end
@@ -133,7 +134,7 @@ class Prompt
       name_and_value = name.split('=')
       name = name_and_value[0]
       value = name_and_value[1]&.gsub("'", '')
-      answer = Answer.find_by(name: name)
+      answer = step.workflow.answers.find_by(name: name)
       raise AnswerNotFound, "No Answer found for name: #{name}" unless answer
       answer.default_value = value if value
       answer
