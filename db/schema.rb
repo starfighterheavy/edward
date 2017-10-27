@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171027191410) do
+ActiveRecord::Schema.define(version: 20171027202618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 20171027191410) do
     t.string "token"
     t.string "cta_class"
     t.text "cta_href"
-    t.index ["workflow_id", "text"], name: "index_steps_on_workflow_id_and_text", unique: true
+    t.index ["text", "conditions", "workflow_id"], name: "index_steps_on_text_and_conditions_and_workflow_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
