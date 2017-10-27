@@ -1,22 +1,30 @@
-h2= @resource.name
+.row
+  .col-lg-12
+    .page-header
+      h1= @resource.name
+      = link_to "Edit", edit_workflow_path(@resource), class: 'btn btn-primary'
+      = link_to "Delete", workflow_path(@resource), method: :delete, class: 'btn btn-secondary'
 
-= link_to "Edit", edit_workflow_path(@resource)
-= link_to "Delete", workflow_path(@resource), method: :delete
+.row.mt-2
+  .col-lg-12
+    h3 Steps
+    = link_to "New Step", new_workflow_step_path(@resource), class: 'btn btn-primary'
+    ol.list-group.mt-3
+      - @resource.steps.each do |step|
+        li.list-group-item= link_to step.text, edit_workflow_step_path(@resource, step)
 
-h3 Steps
-= link_to "New Step", new_workflow_step_path(@resource)
-ol
-  - @resource.steps.each do |step|
-    li= link_to step.text, edit_workflow_step_path(@resource, step)
+.row.mt-2
+  .col-lg-12
+    h3 Answers
+    = link_to "New Answer", new_workflow_answer_path(@resource), class: 'btn btn-primary'
+    ol.list-group.mt-3
+      - @resource.answers.each do |answer|
+        li.list-group-item= link_to answer.name, edit_workflow_answer_path(@resource, answer)
 
-h3 Answers
-= link_to "New Answer", new_workflow_answer_path(@resource)
-ol
-  - @resource.answers.each do |answer|
-    li= link_to answer.name, edit_workflow_answer_path(@resource, answer)
-
-h3 Options
-= link_to "New Option", new_workflow_option_path(@resource)
-ol
-  - @resource.options.each do |option|
-    li= link_to option.name, edit_workflow_option_path(@resource, option)
+.row.mt-2
+  .col-lg-12
+    h3 Options
+    = link_to "New Option", new_workflow_option_path(@resource), class: 'btn btn-primary'
+    ol.list-group.mt-3
+      - @resource.options.each do |option|
+        li.list-group-item= link_to option.name, edit_workflow_option_path(@resource, option)
