@@ -50,6 +50,19 @@ Cucumber::Persona.define "New Line" do
                conditions: "newline=")
 end
 
+Cucumber::Persona.define "Attri Butes" do
+  wf = Workflow.find_or_create_by(token: 'attributes', account: Account.create!)
+  Step.create!(token: "color",
+               workflow: wf,
+               text: "Color?{{@color[font-style=Times New Roman][bold=true]}}",
+               conditions: "color!=")
+
+  Step.create!(token: "attributes",
+               workflow: wf,
+               text: "How great?{{@how_great[bold=true]}}",
+               conditions: "how_great!=")
+end
+
 Cucumber::Persona.define "Callto Action" do
   wf = Workflow.find_or_create_by(token: 'cta', account: Account.create!)
   Step.create!(token: "hello",
@@ -126,7 +139,7 @@ Cucumber::Persona.define "Arthur Dent" do
 
   Step.create!(token: "phone",
                workflow: wf,
-               text: "Texting a token to your phone.\n{{?user_phone_number}}",
+               text: "Texting token.\n{{?user_phone_number}}",
                conditions: "user_phone_number=")
   Answer.create!(workflow: wf,
                  token: "user_phone_number", name: "user_phone_number",
@@ -137,7 +150,7 @@ Cucumber::Persona.define "Arthur Dent" do
 
   Step.create!(workflow: wf,
                token: "confirmation",
-               text: "Please enter the 4 digit number that was just sent to your phone.\n{{?user_confirmation_token}}",
+               text: "Please enter code.\n{{?user_confirmation_token}}",
                conditions: "user_phone_number!=&user_confirmation_token=",
                callout: "https://www.callout.com/api/v1/users",
                callout_method: "post",
@@ -151,7 +164,7 @@ Cucumber::Persona.define "Arthur Dent" do
 
   Step.create!(workflow: wf,
                token: "thankyou",
-               text: "Thank you! Welcome to the application.{{?auth_token}}",
+               text: "Thank you!{{?auth_token}}",
                conditions: "user_confirmation_token!=&auth_token=",
                callout: "https://www.callout.com/api/v1/sessions",
                callout_method: "post",
