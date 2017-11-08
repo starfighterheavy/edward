@@ -1,7 +1,7 @@
 Cucumber::Persona.define "Ragnar Lothbrok" do
   wf = Workflow.create!(token: 'abc', account: Account.create!)
   wf.steps.create!(token: "intro", text: "My first name is {{?user_first_name}}, and my last name is {{?user_last_name}}, and I am {{?user_age}} years old. Generally I prefer {{?user_style_preference}} wines.",
-               conditions: URI.escape("user_first_name=&user_last_name=&user_style_preference="))
+               conditions: URI.escape("user_first_name=&user_last_name=&user_style_preference="), cta: 'next')
   Answer.create!(workflow: wf, token: "user_first_name", name: "user_first_name", input_type: "short_text", characters: 8, text_field_type: 'text')
   Answer.create!(workflow: wf, token: "user_last_name", name: "user_last_name", input_type: "short_text", characters: 10, text_field_type: 'text')
   Answer.create!(workflow: wf, token: "user_age", name: "user_age", input_type: "short_text", characters: 3, text_field_type: 'number')
@@ -14,7 +14,7 @@ Cucumber::Persona.define "Ragnar Lothbrok" do
 
   wf.steps.create!(text: "Hello {{@user_first_name}}, would you like any recommendations?\n{{?user_desires_recommendations}}",
                    token: "hello",
-                   conditions: URI.escape("user_first_name!=&user_desires_recommendations="))
+                   conditions: URI.escape("user_first_name!=&user_desires_recommendations="), cta: 'next')
   yes = wf.options.create!(token: 'yesoption', value: "yes", text: "Yes")
   no = wf.options.create!(token: 'nooption', value: "no", text: "No")
   answer = Answer.create!(workflow: wf, token: "user_desires_recommendations", name: "user_desires_recommendations",
@@ -25,16 +25,17 @@ Cucumber::Persona.define "Ragnar Lothbrok" do
 
   wf.steps.create!(token: "finethen",
                    text: "Well, fine then.",
-                   conditions: "user_desires_recommendations!=yes")
+                   conditions: "user_desires_recommendations!=yes", cta: 'next')
 
   wf.steps.create!(token: "really",
                    text: "Really? Splendid! Superb. I recommend the {{@recommendation}}.",
                    callout: "http://www.callout.com/api/fact?user_first_name={{user_first_name}}",
                    callout_method: "get",
-                   conditions: URI.escape("user_style_preference=white&user_desires_recommendations=yes"))
+                   conditions: URI.escape("user_style_preference=white&user_desires_recommendations=yes"), cta: 'next')
 
   wf.steps.create!(token: "recommendation",
                    text: "I recommend the {{@recommendation}}.\n{{?recommendation}}",
+                   cta: "next",
                    callout: "http://www.callout.com/api/fact?user_first_name={{user_first_name}}",
                    callout_method: "post",
                    callout_body: "preference={{user_style_preference}}",
@@ -50,8 +51,36 @@ Cucumber::Persona.define "New Line" do
                conditions: "newline=")
 end
 
+Cucumber::Persona.define "Text Decoration" do
+  wf = Workflow.find_or_create_by(token: 'textdecoration', account: Account.create!)
+  Step.create!(token: "bold",
+               workflow: wf,
+               text: "I am **bold.",
+               conditions: "bold=true")
+end
+
 Cucumber::Persona.define "Attri Butes" do
   wf = Workflow.find_or_create_by(token: 'attributes', account: Account.create!)
+  Step.create!(token: "favoritecolor",
+               workflow: wf,
+               text: "Favorite color?{{?color='blue'[min=100]}}",
+               conditions: "color=&how_great=&hue=")
+
+  wf.answers.create!(token: "color",
+                     name: "color",
+                     input_type: "short_text",
+                     text_field_type: "text")
+
+  Step.create!(token: "favoritehue",
+               workflow: wf,
+               text: "Favorite hue?{{?hue='200'[min=@hue]}}",
+               conditions: "hue!=")
+
+  wf.answers.create!(token: "hue",
+                     name: "hue",
+                     input_type: "short_text",
+                     text_field_type: "text")
+
   Step.create!(token: "color",
                workflow: wf,
                text: "Color?{{@color[font-style=Times New Roman][bold=true]}}",
