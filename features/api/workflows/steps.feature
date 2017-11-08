@@ -16,7 +16,7 @@ Feature: Steps API
     """
     {
       "token": "intro",
-      "text": "My first name is {{?user_first_name}}, and my last name is {{?user_last_name}}, and I am {{?user_age}} years old. Generally I prefer {{?user_style_preference}} wines.",
+      "text": "My first name is {{?user_first_name}}, and my last name is {{?user_last_name}}, and I am {{?user_age[min=21][max=100]}} years old. Generally I prefer {{?user_style_preference}} wines.",
       "cta": "next",
       "parts": [
         { "type": "text", "content": "My" },
@@ -35,7 +35,7 @@ Feature: Steps API
         { "type": "text", "content": "and" },
         { "type": "text", "content": "I" },
         { "type": "text", "content": "am" },
-        { "type": "short_text", "name": "user_age", "characters": 3, "text_field_type": "number" },
+        { "type": "short_text", "name": "user_age", "characters": 3, "text_field_type": "number", "min": "21", "max": "100" },
         { "type": "text", "content": "years" },
         { "type": "text", "content": "old." },
         { "type": "text", "content": "Generally" },
