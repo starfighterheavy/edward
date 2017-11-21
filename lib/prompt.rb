@@ -31,7 +31,7 @@ class Prompt
       else
         hsh.merge!(text: callout_failure_text)
         hsh.merge!(cta: callout_failure_cta)
-        hsh.merge!(cta: cta_class) if cta_class
+        hsh.merge!(cta_class: cta_class) if cta_class
       end
       hsh[:parts] = PartsCollection.new(hsh[:text], answers(text: hsh[:text]), facts).to_a
       hsh
