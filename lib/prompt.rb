@@ -1,13 +1,14 @@
 require 'prompt/parts_collection'
 require 'prompt/facts_collection'
 require 'prompt/answers_collection'
-require 'prompt/factory'
+require 'prompt/callout'
 
 class Prompt
   attr_reader :step, :user_facts
 
   delegate :text, :token, :cta, :cta_class, :cta_href,
-    :callout, :callout_body, :callout_method, to: :step
+    :callout_url, :callout_body, :callout_method, :callout_success,
+    :callout_failure_text, :callout_failure_cta, to: :step
 
   def initialize(step:, user_facts:)
     @step = step
@@ -19,22 +20,40 @@ class Prompt
   end
 
   def to_h
+    facts
     @hsh ||= begin
-      hsh = { text: text }
-      hsh.merge!(token: token) if token
-      hsh.merge!(cta: cta) if cta
-      hsh.merge!(cta_class: cta_class) if cta_class
-      hsh.merge!(cta_href: cta_href) if cta_href
-      hsh[:parts] = PartsCollection.new(text, answers, facts).to_a
+      hsh = { token: token }
+      if @callout_successful
+        hsh.merge!(text: text)
+        hsh.merge!(cta: cta) if cta
+        hsh.merge!(cta_class: cta_class) if cta_class
+        hsh.merge!(cta_href: cta_href) if cta_href
+      else
+        hsh.merge!(text: callout_failure_text)
+        hsh.merge!(cta: callout_failure_cta)
+        hsh.merge!(cta: cta_class) if cta_class
+      end
+      hsh[:parts] = PartsCollection.new(hsh[:text], answers(text: hsh[:text]), facts).to_a
       hsh
     end
   end
 
-  def answers
+  def answers(text:)
     @answers ||= AnswersCollection.new(step: step, text: text, facts: facts).to_h
   end
 
   def facts
-    @facts ||= FactsCollection.new(text, @user_facts, callout, callout_method, callout_body).to_h
+    @facts ||= begin
+      if callout_url
+        callout = Callout.new(url: callout_url,
+                              method: callout_method,
+                              body: callout_body,
+                              success: callout_success,
+                              facts: user_facts)
+        user_facts.merge!(callout.make)
+      end
+      @callout_successful = callout ? callout.successful? : true
+      user_facts
+    end
   end
 end

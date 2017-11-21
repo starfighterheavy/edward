@@ -1,16 +1,13 @@
 class FactsCollection
-  attr_reader :text, :user_facts, :callout, :callout_method, :callout_body
+  attr_reader :text, :user_facts, :callout, :callout_method, :callout_body, :callout_response, :callout_success
 
-  def initialize(text, user_facts, callout, callout_method, callout_body)
+  def initialize(text, user_facts, callout)
     @text = text
     @user_facts = user_facts
     @callout = callout
     @callout_method = callout_method
     @callout_body = callout_body
-    if callout.present?
-      Rails.logger.info "Calling out to: #{callout}"
-      @callout_facts = make_callout
-    end
+    @callout_success = callout_success
   end
 
   def to_h
@@ -18,17 +15,15 @@ class FactsCollection
   end
 
   def make_callout
-    return unless callout
-    url_template = Liquid::Template.parse(callout)
-    url = url_template.render(user_facts)
-    if callout_method == "get"
-      HTTParty.get(url).parsed_response.symbolize_keys
-    else
-      body_template = Liquid::Template.parse(callout_body)
-      body = body_template.render(user_facts)
+    return true unless callout
+    callout.make
+  end
 
-      HTTParty.post(url, { body: body }).parsed_response&.symbolize_keys
-    end
+  private
+
+  def callout_successful?
+    return true unless callout_success
+    callout.successful?
   end
 end
 
