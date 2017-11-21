@@ -44,7 +44,7 @@ class Prompt
 
   def facts
     @facts ||= begin
-      if callout_url
+      if callout_url.present?
         callout = Callout.new(url: callout_url,
                               method: callout_method,
                               body: callout_body,
