@@ -27,7 +27,7 @@ class Callout
   end
 
   def successful?
-    return true unless success
+    return true unless success.present?
     path = JsonPath.new(success)
     path.on(@parsed_response.to_json).first.present?
   end

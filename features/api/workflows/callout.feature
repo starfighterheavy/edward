@@ -4,6 +4,7 @@ Feature: Callouts
     Given I am Call Out
     And I send and accept JSON
 
+  # Note: Only comparison with integers and floats works
   Scenario: Steps without callouts
     When I send a POST request to "/api/workflows/callout/prompts" with the following:
     """
@@ -28,7 +29,7 @@ Feature: Callouts
     """
     And the response status should be "201"
 
-  Scenario: Steps with successful callout response
+  Scenario: Steps with successful callout response testing integer value
     When I send a POST request to "/api/workflows/callout/prompts" with the following:
     """
     {
@@ -42,17 +43,18 @@ Feature: Callouts
     """
     {
       "token": "result",
-      "text": "You got it!{{@secret}}",
+      "text": "You got it!Secret: {{$..secret[:0].value}}",
       "parts": [
         { "type": "text", "content": "You" },
         { "type": "text", "content": "got" },
         { "type": "text", "content": "it!" },
-        { "type": "text", "content": "Secret: 123" }
+        { "type": "text", "content": "Secret:" },
+        { "type": "text", "content": 123 }
       ]
     }
     """
 
-  Scenario: Steps with failed callout response
+  Scenario: Steps with failed callout response testing integer value
     When I send a POST request to "/api/workflows/callout/prompts" with the following:
     """
     {
@@ -73,6 +75,27 @@ Feature: Callouts
         { "type": "text", "content": "It was something else." },
         { "type": "newline" },
         { "type": "short_text", "text_field_type": "text", "mask": "#", "name": "number", "characters": 3, "value": "2" }
+      ]
+    }
+    """
+
+  Scenario: Steps with successful callout response testing presence of boolean
+    When I send a POST request to "/api/workflows/callout/prompts" with the following:
+    """
+    {
+    "facts": { "present": "true"}
+    }
+    """
+    Then the response status should be "201"
+    And the JSON response should be:
+    """
+    {
+      "token": "present",
+      "text": "And accounted for!",
+      "parts": [
+        { "type": "text", "content": "And" },
+        { "type": "text", "content": "accounted" },
+        { "type": "text", "content": "for!" }
       ]
     }
     """
