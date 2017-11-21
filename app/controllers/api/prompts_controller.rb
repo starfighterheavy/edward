@@ -1,4 +1,5 @@
 require 'prompt'
+require 'prompt/factory'
 
 class Api::PromptsController < ActionController::API
   include Rapido::Controller
