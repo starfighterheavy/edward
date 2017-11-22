@@ -23,6 +23,7 @@ class Callout
     else
       @response = HTTParty.post(parsed_url, { body: parsed_body })
     end
+    Rails.logger.info "Callout - recieved #{@response.code} from #{parsed_url}"
     @parsed_response = @response.parsed_response&.symbolize_keys || {}
   end
 

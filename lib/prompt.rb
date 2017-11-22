@@ -13,6 +13,7 @@ class Prompt
   def initialize(step:, user_facts:)
     @step = step
     @user_facts = user_facts
+    Rails.logger.info "Executing step: #{step.token}"
   end
 
   def save
