@@ -18,6 +18,7 @@ class Callout
   end
 
   def make
+    Rails.logger.info "Callout - attempting to connect to #{parsed_url}"
     if method == "get"
       @response = HTTParty.get(parsed_url)
     else
