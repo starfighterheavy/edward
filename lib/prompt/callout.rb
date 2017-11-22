@@ -20,9 +20,9 @@ class Callout
   def make
     Rails.logger.info "Callout - attempting to connect to #{parsed_url}"
     if method == "get"
-      @response = HTTParty.get(parsed_url)
+      @response = HTTParty.get(parsed_url, follow_redirects: false)
     else
-      @response = HTTParty.post(parsed_url, { body: parsed_body })
+      @response = HTTParty.post(parsed_url, { body: parsed_body, follow_redirects: false })
     end
     Rails.logger.info "Callout - recieved #{@response.code} from #{parsed_url}"
     @parsed_response = @response.parsed_response&.symbolize_keys || {}
