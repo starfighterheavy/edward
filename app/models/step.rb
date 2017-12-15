@@ -30,14 +30,36 @@ class Step < ActiveRecord::Base
   def match?(data)
     URI.unescape(conditions)
        .split('&')
-       .map { |c| c.split('=') }
-       .all? do |key, value|
-         if key.ends_with?('!')
-           data[key[0..-2]].to_s != value.to_s
+       .all? do |f|
+         if f.include?('=')
+           equals?(f, data)
+         elsif f.include?('>')
+           greater_than?(f, data)
+         elsif f.include?('<')
+           less_than?(f, data)
          else
-           data[key].to_s == value.to_s
+           raise "Bad comparator: #{f}"
          end
        end
+  end
+
+  def equals?(str, data)
+    key, value = str.split('=')
+    if key.ends_with?('!')
+      data[key[0..-2]].to_s != value.to_s
+    else
+      data[key].to_s == value.to_s
+    end
+  end
+
+  def greater_than?(str, data)
+    key, value = str.split('>')
+    data[key].to_i > value.to_i
+  end
+
+  def less_than?(str, data)
+    key, value = str.split('<')
+    data[key].to_i < value.to_i
   end
 
   def callout_url
