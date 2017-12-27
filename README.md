@@ -1,6 +1,7 @@
 # Edward
 
 [![Code Climate](https://codeclimate.com/github/starfighterheavy/edward/badges/gpa.svg)](https://codeclimate.com/github/starfighterheavy/edward)
+[![Dependency Status](https://gemnasium.com/starfighterheavy/edward.svg)](https://gemnasium.com/starfighterheavy/edward)
 
 Edward is a Ruby based, Heroku deployable, api-only, experimental application intended to drive conversation based user interfaces. It is currently under development and actively used, but could removed at any time. Use at your own risk.
 
