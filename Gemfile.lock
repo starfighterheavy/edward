@@ -46,7 +46,7 @@ GEM
       execjs
     backports (3.11.0)
     bcrypt (3.1.11)
-    bootstrap (4.0.0.beta2.1)
+    bootstrap (4.0.0.beta3)
       autoprefixer-rails (>= 6.0.3)
       popper_js (>= 1.12.3, < 2)
       sass (>= 3.5.2)
@@ -92,7 +92,7 @@ GEM
     cucumber-tag_expressions (1.1.1)
     cucumber-wire (0.0.1)
     database_cleaner (1.6.2)
-    devise (4.3.0)
+    devise (4.4.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.2)
@@ -273,7 +273,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bootstrap (= 4.0.0.beta2.1)
+  bootstrap (= 4.0.0.beta3)
   capybara (~> 2.16.0)
   cucumber-api-steps (~> 0.14)
   cucumber-persona (~> 0.2)
@@ -287,7 +287,7 @@ DEPENDENCIES
   kaminari (~> 1.1)
   liquid (~> 4.0)
   pg (~> 0.21)
-  pry-byebug
+  pry-byebug (~> 3.5)
   puma (~> 3.7)
   rack-cors (~> 1.0)
   rails (~> 5.1.4)

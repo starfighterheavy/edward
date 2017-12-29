@@ -47,7 +47,7 @@ gem 'kaminari', '~> 1.1'
 # Use: Pageination library
 # URL: https://github.com/kaminari/kaminari
 
-gem 'devise', '~> 4.3'
+gem 'devise', '~> 4.4'
 # Use: User authentication and registration
 # URL: https://github.com/plataformatec/devise
 
@@ -63,7 +63,7 @@ gem 'sass-rails', '~> 5.0'
 # Use: Sass adapter for Rails
 # URL: https://github.com/rails/sass-rails
 
-gem 'bootstrap', '4.0.0.beta2.1'
+gem 'bootstrap', '4.0.0.beta3'
 # Use: Asset library for Bootstrap 4
 # URL: https://github.com/twbs/bootstrap-rubygem
 
@@ -110,7 +110,7 @@ group :test do
 end
 
 group :development, :test do
-  gem 'pry-byebug'
+  gem 'pry-byebug', '~> 3.5'
   # Use: Debugging plugin for Pry
   # URL: https://github.com/deivid-rodriguez/pry-byebug
 
