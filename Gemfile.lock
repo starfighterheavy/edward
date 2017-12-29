@@ -280,7 +280,7 @@ DEPENDENCIES
   cucumber-rails (~> 1.5)
   cucumber-sammies (~> 0.1)
   database_cleaner (~> 1.6)
-  devise (~> 4.3)
+  devise (~> 4.4)
   dotenv-rails (~> 2.2)
   httparty (~> 0.15)
   jsonpath (~> 0.8)
