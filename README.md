@@ -74,6 +74,12 @@ How you render what Edward returns is up to you and depends on the use case. See
 
 To see everything that Edward can do, refer to the workflow feature tests that outline the various kinds of applications Edward can be suited to: [Feature tests](https://github.com/starfighterheavy/edward/tree/master/features/api/workflows)
 
+## Examples
+
+### BridgeCare Finance
+
+Edward is used to drive a simple calculator on the [BridgeCare Finance Homepage](https://www.bridgecarefinance.com). Using Edward has allowed BridgeCare to iterate quickly through different calculator designs without building or modifying any UI code.
+
 ## Interested?
 
 If you'd like to contribute ideas or code to Edward, please reach out to [jskirst](https://github.com/jskirst).
