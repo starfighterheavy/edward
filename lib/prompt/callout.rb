@@ -26,6 +26,8 @@ class Callout
     end
     Rails.logger.info "Callout - recieved #{@response.code} from #{parsed_url}"
     @parsed_response = @response.parsed_response&.symbolize_keys || {}
+    Rails.logger.info @parsed_response
+    @parsed_response
   end
 
   def successful?
