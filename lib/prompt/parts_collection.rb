@@ -7,8 +7,24 @@ class PartsCollection
     @facts = facts
   end
 
+  def to_a
+    items.map do |item|
+      if item.starts_with?("{") && item.ends_with?("}")
+        parse_complex_type(item)
+      elsif item == "\n"
+        new_newline
+      elsif ['?', '!', '.', ','].include?(item)
+        new_punctuation(item)
+      else
+        new_text(item)
+      end
+    end.flatten
+  end
+
+  private
+
   def items
-    @items ||= text.split(/\{(\{[!?@\$#][^{]+\})\}/)
+    @items ||= text.split(/\{(\{[&!?@\$#][^{]+\})\}/)
                  .map { |i| i.start_with?("{") ? [i] : i.split(/^([\.\?!,])/) } # split out punctuation that occurs at the beginning
                  .flatten
                  .map { |i| i.start_with?("{") ? [i] : i.split(/([^\.\?,!\{\}]+[\.\?!,]+)/) } # split out punctuation that does not occur at beginning but is not inside liquid block
@@ -20,32 +36,33 @@ class PartsCollection
                  .select { |i| i != '' } # remove empty items
   end
 
-  def to_a
-    items.map do |item|
-      if item.starts_with?("{") && item.ends_with?("}")
-        item = item.slice(1..-2)
-        item_type = item.slice!(0)
-        if item_type == '?'
-          new_question(item)
-        elsif item_type == '@'
-          new_value(item)
-        elsif item_type == '$'
-          new_json(item)
-        elsif item_type == '#'
-          new_link(item)
-        elsif item_type == '!'
-          new_choice(item)
-        else
-          raise 'Unknown item type: ' + item_type
-        end
-      elsif item == "\n"
-        new_newline
-      elsif ['?', '!', '.', ','].include?(item)
-        new_punctuation(item)
-      else
-        new_text(item)
-      end
-    end.flatten
+  def parse_complex_type(item)
+    item = item.slice(1..-2)
+    item_type = item.slice!(0)
+    if item_type == '?'
+      new_question(item)
+    elsif item_type == '@'
+      new_value(item)
+    elsif item_type == '$'
+      new_json(item)
+    elsif item_type == '#'
+      new_link(item)
+    elsif item_type == '!'
+      new_choice(item)
+    elsif item_type == '&'
+      new_assignment(item)
+    else
+      raise 'Unknown item type: ' + item_type
+    end
+  end
+
+  def new_assignment(item)
+    item_parts = item.split('=')
+    name = item_parts[0]
+    value = item_parts[1]
+    path = JsonPath.new(value)
+    content = path.on(facts.to_json).first
+    { name: name, value: content, type: 'hidden' }
   end
 
   def new_question(item)
